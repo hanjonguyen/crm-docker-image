@@ -63,5 +63,7 @@ jobs:
           docker run --rm --entrypoint bash ghcr.io/${{ github.repository_owner }}/crm-docker-image:v1 \
             -c "cat sites/apps.txt"
           echo "=== kiểm tra module python crm ==="
+          # PHẢI gọi python của bench (env/bin/python), không phải python hệ thống —
+          # app crm cài dạng editable vào virtualenv của bench nên python hệ thống không thấy.
           docker run --rm --entrypoint bash ghcr.io/${{ github.repository_owner }}/crm-docker-image:v1 \
-            -c "python -c 'import crm, frappe; print(\"OK - crm:\", crm.__file__); print(\"frappe:\", frappe.__version__)'"
+            -c "/home/frappe/frappe-bench/env/bin/python -c 'import crm, frappe; print(\"OK - crm:\", crm.__file__); print(\"frappe:\", frappe.__version__)'"
